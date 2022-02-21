@@ -1,0 +1,44 @@
+Architecture
+==============
+
+The project main goal is to validate if a password is valid or not based on series of predefined conditions.
+These conditions are fixed today but, as everything in software development, it can change. For this reason,
+I'm building an architecture that is able to give support to change as fast as possible using a config structure
+where all rules to validate a password are defined.
+
+Layers
+
+The code will have three layers:
+Controller Layer to handle requests using a RetFull framework;
+Service Layer to handle resource loading using interfaces to use a the personalized way of password validation;
+Domain Layer to handle different implementations of password validation rules.
+
+App flow
+
+The user will make requests using HTTP POST method using json to send data to API.
+
+{"password: "<password_value_here>"}
+
+The Controller will deserialize the json into PasswordData object, then delivery it to service layer that will load the
+password rules and apply them in password. The result will be true if all rules was attended otherwise false.
+
+There is a interface called PasswordValidationRule and the default implementation of it is PasswordValidationRuleRegex.
+
+You can add another kind of implementation by implements PasswordValidationRule and adding your logic there.     
+
+
+Running the App
+==============
+
+Download activator (https://downloads.typesafe.com/typesafe-activator/1.3.10/typesafe-activator-1.3.10-minimal.zip)
+
+export PATH=$PATH:pathTo/activator/bin
+
+cd security-api
+
+activator run
+
+POST http://localhost:9000/api/security/password/valid
+body {"password: "<password_value_here>"}
+
+
